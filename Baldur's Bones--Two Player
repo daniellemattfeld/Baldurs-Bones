@@ -1,0 +1,61 @@
+import os
+import random
+import time
+
+headline = "☠️BALDUR'S BONES☠️"
+width = 30
+print(headline.center(width))
+player1 = input("Give me your name: ")
+player2 = input("And what's your name?: ")
+time.sleep(1)
+os.system("clear")
+
+
+
+def roll_dice(side):
+    roll = random.randint(1, side)
+    return roll
+
+# initial roll
+def initial_roll():
+    total_score = roll_dice(6) + roll_dice(6) + roll_dice(6)
+    return total_score
+
+def additional_roll():
+    return roll_dice(6)
+    
+# total 1 and 2 for players 1 and 2
+total1 = initial_roll()
+total2 = initial_roll()
+players = [{'name': player1, 'total': initial_roll(), 'continue': True},
+           {'name': player2, 'total': initial_roll(), 'continue': True}]
+
+
+while any(player['continue'] for player in players):
+    for player in players:
+        print(f"\033[4m{player['name']}'s turn\033[0m".center(width))
+        print(f"Ye total is: {player['total']}")
+        if player['total'] < 18 and player['continue']:
+            roll_again = input(f"Would ye like to chance fate, {player['name']}? (yes/no): ")
+            if roll_again.lower() == "yes":
+                new_roll = additional_roll()
+                player['total'] += new_roll
+                print(f"Ye rolled {new_roll}. Ye total is now {player['total']}")
+                time.sleep(3)
+                os.system("clear")
+            else:
+                player['continue'] = False
+                time.sleep(2)
+                os.system("clear")
+        if player['total'] >= 19:
+            print(f"Ahh sorry {player['name']}, ye rolled a too high and you lost. "
+                  "Congrats to the other player!")
+            player['continue'] = False
+            break
+        if player['total'] == 18:
+            print(f"Aye! Congrats {player['name']}, you've won Baldur's Bones!")
+            player['continue'] = False
+            break
+    else:
+        continue
+    break
