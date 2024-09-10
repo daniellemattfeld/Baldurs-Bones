@@ -1,0 +1,96 @@
+import os
+import random
+import time
+
+headline = "\033[4m☠️BALDUR'S BONES☠️\033[0m"
+width = 30
+print(headline.center(width))
+rules = """
+    1. With Baldur's Bones in hand, you’ll roll three dice of six. The
+gamesmaster, Garl Glitterbeard, does the same, and the game has begun.\n
+    2. Should you feel brave, rolls are made again until you’re satisfied, and 
+your number is then set in stone.\n
+    3. If your total count ever exceeds eighteen, fate has abandoned you, 
+and your game is lost.\n
+    4. If, in your bravery and wisdom both, your number is closest to eighteen, 
+you’ve outplayed the gamesmaster, and have won Baldur’s Bones. """
+
+# rules of the game
+while True:
+    how_to_play = input("Would you like the rules for the game? (yes/no): ")
+    if how_to_play.lower() == "yes":
+        print(rules)
+        time.sleep(5)
+        play_question = input("\nReady to play?: ")
+        if play_question.lower() == "yes":
+            time.sleep(1)
+            os.system("clear")
+            break
+        else:
+            print("Please say yes to move on to the game")
+    elif how_to_play.lower() == "no":
+        time.sleep(.5)
+        os.system("clear")
+        break
+        
+def roll_dice(side):
+    roll = random.randint(1, side)
+    return roll
+# initial roll
+def initial_roll():
+    total_score = roll_dice(6) + roll_dice(6) + roll_dice(6)
+    return total_score
+def additional_roll():
+    return roll_dice(6)
+
+# game loop
+def play_game():
+    target_total = 18
+    total = initial_roll()
+    bot_total = initial_roll()
+    print(f"\033[4mGarl's initial roll: {bot_total}\033[0m")
+    print(f"\n\033[4mYour initial roll: {total}\033[0m\n")
+    while (total < target_total) and (bot_total < target_total):
+            roll_again = input("\nWould ye like to chance fate, adventurer?: ")
+            if roll_again.lower() == "yes":
+                os.system("clear")
+                new_roll = additional_roll()
+                total += new_roll
+                print(f"Ye rolled {new_roll}. Ye total is now {total}")
+                bot_total += new_roll
+                print("Garl has also chosen to roll another die.")
+                time.sleep(1)
+                if (total >= target_total):
+                    print("Ahhh sorry friend, you've rolled far too high."
+                          "Garl has won!")
+                elif (bot_total >= target_total):
+                    print("Congrats my friend! You've won against Garl with a"
+                         f"score of {total} to {bot_total}")
+            elif roll_again.lower() == "no":
+                os.system("clear")
+                if abs(total - target_total) < abs(bot_total - target_total):
+                    print(f"Congrats my friend! You've won against Garl with a "
+                    f"score of {total} to {bot_total}.")
+                elif abs(total - target_total) > abs(bot_total - target_total):
+                        print(f"Ahh sorry friend, the luck was not in your hands, " 
+                        f"and Garl has won with {bot_total}.")
+                elif abs(total - target_total) == abs(bot_total - target_total):
+                    print(f"By the gods, it's a tie! You finished with a "
+                    f"score of {total}, and Garl ended with {bot_total}.")
+                break
+            else:
+                print("Please type 'yes' or 'no'")
+    if (bot_total >= target_total):
+                print(f"\nCongrats my friend! You've won against Garl with a "
+                f"score of {total} to {bot_total}.")
+    elif bot_total == target_total:
+                print("\nCongrats friend, ye must be blessed by Garl Glittergold himself! "
+                "Ye won with a score of 18!")
+
+while True:
+    play_game()
+    play_again = input("Would you like to play again?: ")
+    os.system("clear")
+    if play_again.lower() != "yes":
+        print("Thanks for playing, Garl loves you!")
+        break
