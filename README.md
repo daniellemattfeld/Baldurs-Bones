@@ -1,1 +1,2 @@
 # Baldurs-Bones
+Baldur's Bones is a dice game from the world of Dungeons and Dragons! The game is similar to blackjack, but uses dice instead of cards, and only goes to 18. There are two versions listed, a single player against a bot, and a two player game. You begin by rolling three d6, and then are able to chance your fate and roll another die, or stand. This was my first major project I created while teaching myself python. 
